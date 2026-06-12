@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stieger Holzbau GmbH – Bad Ragaz</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: { DEFAULT: '#1C2B45', light: '#243559', dark: '#111b2e', muted: '#2e4068' },
+            amber: { DEFAULT: '#C8601A', light: '#E07030', dark: '#A04E14', pale: '#F5E8DC' },
+            warm: { DEFAULT: '#F5F0E8', light: '#FAFAF7', dark: '#EBE5D8' },
+            stone: { DEFAULT: '#7C6F60', light: '#9A8B7A', dark: '#5A4F42' },
+          },
+          fontFamily: {
+            display: ['Cormorant Garamond', 'Georgia', 'serif'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          letterSpacing: { tight2: '-0.03em', tight3: '-0.04em' },
+          lineHeight: { relaxed2: '1.75' },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #F5F0E8;
+      color: #1C2B45;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Grain overlay ─────────────────────────── */
+    .grain::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.035;
+      pointer-events: none;
+      border-radius: inherit;
+    }
+
+    /* ── Nav ───────────────────────────────────── */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      transition: background 0.4s ease, box-shadow 0.4s ease, padding 0.4s ease;
+      padding: 28px 0;
+    }
+    #nav.scrolled {
+      background: rgba(28, 43, 69, 0.97);
+      box-shadow: 0 2px 40px rgba(28, 43, 69, 0.35);
+      padding: 16px 0;
+      backdrop-filter: blur(12px);
+    }
+
+    /* ── Hero ──────────────────────────────────── */
+    .hero-bg {
+      background: linear-gradient(160deg, #0e1b2e 0%, #1C2B45 45%, #2a3f60 100%);
+    }
+
+    .hero-accent-1 {
+      background: radial-gradient(ellipse 70% 50% at 75% 40%, rgba(200, 96, 26, 0.25) 0%, transparent 70%);
+    }
+    .hero-accent-2 {
+      background: radial-gradient(ellipse 50% 60% at 20% 80%, rgba(200, 96, 26, 0.12) 0%, transparent 65%);
+    }
+
+    /* ── Buttons ───────────────────────────────── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #C8601A;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 14px 32px;
+      border-radius: 3px;
+      box-shadow: 0 4px 20px rgba(200, 96, 26, 0.4), 0 1px 4px rgba(200, 96, 26, 0.2);
+      transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    }
+    .btn-primary:hover {
+      background: #E07030;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 30px rgba(200, 96, 26, 0.5), 0 2px 8px rgba(200, 96, 26, 0.25);
+    }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:focus-visible { outline: 2px solid #C8601A; outline-offset: 4px; }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1.5px solid rgba(255,255,255,0.45);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 13px 32px;
+      border-radius: 3px;
+      transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+    }
+    .btn-outline:hover {
+      border-color: rgba(255,255,255,0.8);
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-1px);
+    }
+    .btn-outline:active { transform: translateY(0); }
+    .btn-outline:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+
+    /* ── Service cards ─────────────────────────── */
+    .service-card {
+      background: #fff;
+      border-radius: 4px;
+      box-shadow:
+        0 1px 2px rgba(28, 43, 69, 0.06),
+        0 4px 16px rgba(28, 43, 69, 0.07),
+        0 12px 40px rgba(28, 43, 69, 0.05);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+      overflow: hidden;
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow:
+        0 2px 4px rgba(28, 43, 69, 0.08),
+        0 8px 24px rgba(28, 43, 69, 0.12),
+        0 20px 60px rgba(28, 43, 69, 0.10);
+    }
+
+    .service-icon {
+      width: 52px; height: 52px;
+      background: #F5E8DC;
+      border-radius: 3px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s ease;
+    }
+    .service-card:hover .service-icon { background: #C8601A; }
+    .service-card:hover .service-icon svg { color: #fff; }
+    .service-icon svg { color: #C8601A; transition: color 0.2s ease; }
+
+    /* ── Project cards ─────────────────────────── */
+    .project-card {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      box-shadow: 0 4px 24px rgba(28, 43, 69, 0.18);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .project-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 40px rgba(28, 43, 69, 0.28);
+    }
+    .project-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .project-card:hover img { transform: scale(1.06); }
+    .project-card .overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(14, 27, 46, 0.82) 0%, rgba(14, 27, 46, 0.1) 55%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .project-card:hover .overlay { opacity: 1; }
+    .project-card .caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 24px;
+      transform: translateY(8px);
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .project-card:hover .caption { opacity: 1; transform: translateY(0); }
+
+    /* ── Stat items ────────────────────────────── */
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem;
+      font-weight: 600;
+      line-height: 1;
+      color: #C8601A;
+    }
+
+    /* ── Section label ─────────────────────────── */
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #C8601A;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 28px; height: 1.5px;
+      background: #C8601A;
+    }
+
+    /* ── Divider ───────────────────────────────── */
+    .h-rule {
+      width: 48px; height: 2px;
+      background: linear-gradient(90deg, #C8601A, transparent);
+      margin: 16px 0 0;
+    }
+
+    /* ── Nav links ─────────────────────────────── */
+    .nav-link {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      transition: color 0.2s ease;
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1.5px;
+      background: #C8601A;
+      transition: width 0.25s ease;
+    }
+    .nav-link:hover { color: #fff; }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link:focus-visible { outline: 2px solid #C8601A; outline-offset: 4px; border-radius: 2px; }
+
+    /* ── Contact form ──────────────────────────── */
+    .form-input {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 3px;
+      padding: 14px 18px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9375rem;
+      color: #fff;
+      transition: border-color 0.2s ease, background 0.2s ease;
+      outline: none;
+    }
+    .form-input::placeholder { color: rgba(255,255,255,0.35); }
+    .form-input:hover { border-color: rgba(255,255,255,0.25); }
+    .form-input:focus { border-color: #C8601A; background: rgba(255,255,255,0.09); }
+    .form-input:focus-visible { outline: none; }
+
+    /* ── Animations ────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.22s; }
+    .delay-3 { animation-delay: 0.34s; }
+    .delay-4 { animation-delay: 0.46s; }
+
+    /* ── Hamburger ─────────────────────────────── */
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: flex; }
+  </style>
+</head>
+
+<body>
+
+<!-- ══════════════════════════════════════════════
+     NAVIGATION
+══════════════════════════════════════════════ -->
+<nav id="nav">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="#" class="flex items-center gap-3 flex-shrink-0" aria-label="Stieger Holzbau GmbH">
+      <img
+        src="brand%20assets/3ecbae0ae2324b1898677685c16f6e35-1ca32f02-300w.png.webp"
+        alt="Stieger Holzbau Logo"
+        class="h-12 w-auto"
+      />
+    </a>
+
+    <!-- Desktop links -->
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#leistungen" class="nav-link">Leistungen</a>
+      <a href="#projekte"   class="nav-link">Projekte</a>
+      <a href="#ueber-uns"  class="nav-link">Über uns</a>
+      <a href="#kontakt"    class="nav-link">Kontakt</a>
+    </div>
+
+    <!-- CTA -->
+    <a href="#kontakt" class="hidden md:inline-flex btn-primary">
+      Anfrage stellen
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7h12M8 2l5 5-5 5"/></svg>
+    </a>
+
+    <!-- Hamburger -->
+    <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Menu öffnen" onclick="toggleMenu()">
+      <span class="block w-6 h-0.5 bg-white transition-transform duration-200 origin-center" id="hb1"></span>
+      <span class="block w-6 h-0.5 bg-white transition-opacity duration-200" id="hb2"></span>
+      <span class="block w-6 h-0.5 bg-white transition-transform duration-200 origin-center" id="hb3"></span>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="md:hidden flex-col px-6 pt-4 pb-6 gap-4 bg-navy/95 backdrop-blur-sm mt-2">
+    <a href="#leistungen" class="nav-link py-2" onclick="toggleMenu()">Leistungen</a>
+    <a href="#projekte"   class="nav-link py-2" onclick="toggleMenu()">Projekte</a>
+    <a href="#ueber-uns"  class="nav-link py-2" onclick="toggleMenu()">Über uns</a>
+    <a href="#kontakt"    class="nav-link py-2" onclick="toggleMenu()">Kontakt</a>
+    <a href="#kontakt" class="btn-primary mt-2 self-start" onclick="toggleMenu()">Anfrage stellen</a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════ -->
+<section class="hero-bg grain relative overflow-hidden min-h-screen flex items-center">
+  <div class="hero-accent-1 absolute inset-0 pointer-events-none"></div>
+  <div class="hero-accent-2 absolute inset-0 pointer-events-none"></div>
+
+  <!-- Wood plank texture strips (decorative) -->
+  <div class="absolute right-0 top-0 bottom-0 w-1/2 opacity-10 pointer-events-none"
+       style="background: repeating-linear-gradient(0deg, transparent, transparent 48px, rgba(200,96,26,0.4) 48px, rgba(200,96,26,0.4) 50px);"></div>
+
+  <!-- Geometric accent shape -->
+  <div class="absolute right-16 top-1/2 -translate-y-1/2 hidden lg:block pointer-events-none opacity-15">
+    <svg width="420" height="420" viewBox="0 0 420 420" fill="none">
+      <rect x="1" y="1" width="418" height="418" rx="4" stroke="rgba(200,96,26,0.6)" stroke-width="1.5"/>
+      <rect x="32" y="32" width="356" height="356" rx="2" stroke="rgba(200,96,26,0.3)" stroke-width="1"/>
+      <path d="M210 60 L360 180 L360 300 L210 360 L60 300 L60 180 Z" stroke="rgba(255,255,255,0.15)" stroke-width="1" fill="none"/>
+      <path d="M210 100 L320 200 L320 280 L210 330 L100 280 L100 200 Z" stroke="rgba(200,96,26,0.25)" stroke-width="1" fill="none"/>
+      <line x1="60" y1="60" x2="360" y2="360" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+      <line x1="360" y1="60" x2="60" y2="360" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    </svg>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 pt-36 pb-28 relative z-10">
+    <div class="max-w-2xl">
+      <div class="section-label fade-up" style="--clr: rgba(200,96,26,1)">
+        <span></span>Stieger Holzbau GmbH · Bad Ragaz
+      </div>
+
+      <h1 class="mt-6 font-display text-white fade-up delay-1"
+          style="font-size: clamp(3rem, 6vw, 5.25rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.08;">
+        Holzbau.<br/>
+        <em style="font-style: italic; color: rgba(255,255,255,0.75);">Mit Handwerk<br/>und Präzision.</em>
+      </h1>
+
+      <p class="mt-8 text-white/60 fade-up delay-2"
+         style="font-size: 1.0625rem; line-height: 1.75; max-width: 480px;">
+        Ihr Spezialist für Holzkonstruktionen im Rheintal und Sarganserland.
+        Wir planen, bauen und realisieren mit traditionellem Handwerk und moderner Technik.
+      </p>
+
+      <div class="mt-10 flex flex-wrap gap-4 fade-up delay-3">
+        <a href="#leistungen" class="btn-primary">
+          Unsere Leistungen
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7h12M8 2l5 5-5 5"/></svg>
+        </a>
+        <a href="#kontakt" class="btn-outline">Kontakt aufnehmen</a>
+      </div>
+
+      <!-- Trust badges -->
+      <div class="mt-16 flex flex-wrap gap-x-10 gap-y-4 fade-up delay-4">
+        <div>
+          <div class="font-display text-white text-3xl font-semibold" style="letter-spacing: -0.02em;">25+</div>
+          <div class="text-white/45 text-xs tracking-widest uppercase mt-1">Jahre Erfahrung</div>
+        </div>
+        <div class="w-px bg-white/15 self-stretch hidden sm:block"></div>
+        <div>
+          <div class="font-display text-white text-3xl font-semibold" style="letter-spacing: -0.02em;">500+</div>
+          <div class="text-white/45 text-xs tracking-widest uppercase mt-1">Projekte realisiert</div>
+        </div>
+        <div class="w-px bg-white/15 self-stretch hidden sm:block"></div>
+        <div>
+          <div class="font-display text-white text-3xl font-semibold" style="letter-spacing: -0.02em;">100%</div>
+          <div class="text-white/45 text-xs tracking-widest uppercase mt-1">Schweizer Qualität</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <a href="#leistungen" class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40 hover:opacity-70 transition-opacity" aria-label="Weiter scrollen">
+    <span class="text-white text-xs tracking-widest uppercase">Mehr erfahren</span>
+    <svg class="text-white animate-bounce" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v14M4 11l6 6 6-6"/></svg>
+  </a>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     SERVICES
+══════════════════════════════════════════════ -->
+<section id="leistungen" class="py-28 bg-warm-light">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="mb-16">
+      <div class="section-label">Leistungen</div>
+      <h2 class="mt-4 font-display text-navy"
+          style="font-size: clamp(2rem, 4vw, 3rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; max-width: 520px;">
+        Was wir für Sie bauen und gestalten
+      </h2>
+      <div class="h-rule"></div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- Card 1 -->
+      <div class="service-card p-8 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-24 h-24 rounded-full bg-amber-pale opacity-60 translate-x-8 -translate-y-8 pointer-events-none"></div>
+        <div class="service-icon mb-6">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </div>
+        <h3 class="font-display text-navy text-2xl font-semibold mb-3" style="letter-spacing: -0.02em;">Holz-Neubau</h3>
+        <p class="text-stone text-sm leading-relaxed">
+          Vom Einfamilienhaus bis zum Mehrfamiliengebäude – wir planen und realisieren Ihren Holzneubau in nachhaltiger Bauweise, angepasst an Ihre Wünsche und das Ortsbild.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="service-card p-8 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-24 h-24 rounded-full bg-amber-pale opacity-60 translate-x-8 -translate-y-8 pointer-events-none"></div>
+        <div class="service-icon mb-6">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </div>
+        <h3 class="font-display text-navy text-2xl font-semibold mb-3" style="letter-spacing: -0.02em;">Zimmerei</h3>
+        <p class="text-stone text-sm leading-relaxed">
+          Dachstühle, Balkone, Pergolen und Holzunterkonstruktionen – unsere erfahrenen Zimmerleute arbeiten präzise und verlässlich nach bewährtem Handwerk.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="service-card p-8 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-24 h-24 rounded-full bg-amber-pale opacity-60 translate-x-8 -translate-y-8 pointer-events-none"></div>
+        <div class="service-icon mb-6">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+        </div>
+        <h3 class="font-display text-navy text-2xl font-semibold mb-3" style="letter-spacing: -0.02em;">Umbau & Renovation</h3>
+        <p class="text-stone text-sm leading-relaxed">
+          Wir modernisieren bestehende Strukturen mit Holz – energetische Sanierungen, Anbau, Aufstockung und Fassadenerneuerung für ein zeitgemässes Zuhause.
+        </p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="service-card p-8 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-24 h-24 rounded-full bg-amber-pale opacity-60 translate-x-8 -translate-y-8 pointer-events-none"></div>
+        <div class="service-icon mb-6">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <h3 class="font-display text-navy text-2xl font-semibold mb-3" style="letter-spacing: -0.02em;">Holzfassaden</h3>
+        <p class="text-stone text-sm leading-relaxed">
+          Vorgehängte, hinterlüftete Holzfassaden in Weissholz, Lärchenholz oder Thermoholz. Wetterfest, nachhaltig und ein optisches Highlight für jedes Objekt.
+        </p>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="service-card p-8 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-24 h-24 rounded-full bg-amber-pale opacity-60 translate-x-8 -translate-y-8 pointer-events-none"></div>
+        <div class="service-icon mb-6">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>
+            <path d="M12 7v3"/>
+          </svg>
+        </div>
+        <h3 class="font-display text-navy text-2xl font-semibold mb-3" style="letter-spacing: -0.02em;">Dachkonstruktionen</h3>
+        <p class="text-stone text-sm leading-relaxed">
+          Satteldach, Flachdach, Walmdach – wir erstellen tragende Dachstühle, Dachaufbauten und Gauben in präziser Holzbauweise für dauerhaften Schutz.
+        </p>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="service-card p-8 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-24 h-24 rounded-full bg-amber-pale opacity-60 translate-x-8 -translate-y-8 pointer-events-none"></div>
+        <div class="service-icon mb-6">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
+          </svg>
+        </div>
+        <h3 class="font-display text-navy text-2xl font-semibold mb-3" style="letter-spacing: -0.02em;">Beratung & Planung</h3>
+        <p class="text-stone text-sm leading-relaxed">
+          Von der ersten Idee bis zur Baugenehmigung – wir begleiten Sie kompetent durch Planung, Materialwahl und Koordination mit Behörden und Partnern.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     PROJECTS
+══════════════════════════════════════════════ -->
+<section id="projekte" class="py-28" style="background: #EFEBE1;">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-16 gap-6">
+      <div>
+        <div class="section-label">Referenzen</div>
+        <h2 class="mt-4 font-display text-navy"
+            style="font-size: clamp(2rem, 4vw, 3rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.15;">
+          Ausgewählte Projekte
+        </h2>
+        <div class="h-rule"></div>
+      </div>
+      <p class="text-stone text-sm leading-relaxed max-w-xs md:text-right">
+        Jedes Projekt spiegelt unsere Leidenschaft für das Material Holz und unseren Anspruch an handwerkliche Qualität.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="project-card lg:col-span-2 lg:row-span-1" style="aspect-ratio: 16/9;">
+        <img src="https://placehold.co/900x506/1C2B45/C8601A?text=Einfamilienhaus+Bad+Ragaz" alt="Einfamilienhaus Bad Ragaz" />
+        <div class="overlay"></div>
+        <div class="caption">
+          <p class="text-white/60 text-xs tracking-widest uppercase mb-1">Holz-Neubau · Bad Ragaz</p>
+          <h4 class="text-white font-display text-xl font-semibold">Einfamilienhaus in Holzbauweise</h4>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <img src="https://placehold.co/600x450/243559/C8601A?text=Dachstuhl+Mels" alt="Dachstuhl Mels" />
+        <div class="overlay"></div>
+        <div class="caption">
+          <p class="text-white/60 text-xs tracking-widest uppercase mb-1">Zimmerei · Mels</p>
+          <h4 class="text-white font-display text-xl font-semibold">Dachstuhl Renovation</h4>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <img src="https://placehold.co/600x450/2a3f60/D4722A?text=Holzfassade+Sargans" alt="Holzfassade Sargans" />
+        <div class="overlay"></div>
+        <div class="caption">
+          <p class="text-white/60 text-xs tracking-widest uppercase mb-1">Fassade · Sargans</p>
+          <h4 class="text-white font-display text-xl font-semibold">Lärchenholz-Fassade</h4>
+        </div>
+      </div>
+
+      <div class="project-card md:col-span-2 lg:col-span-2" style="aspect-ratio: 16/9;">
+        <img src="https://placehold.co/900x506/1a2744/C8601A?text=Mehrfamilienhaus+Ragaz" alt="Mehrfamilienhaus" />
+        <div class="overlay"></div>
+        <div class="caption">
+          <p class="text-white/60 text-xs tracking-widest uppercase mb-1">Holz-Neubau · Bad Ragaz</p>
+          <h4 class="text-white font-display text-xl font-semibold">Mehrfamilienhaus Holzkonstruktion</h4>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <img src="https://placehold.co/600x450/243559/E07030?text=Pergola+Pfäfers" alt="Pergola Pfäfers" />
+        <div class="overlay"></div>
+        <div class="caption">
+          <p class="text-white/60 text-xs tracking-widest uppercase mb-1">Zimmerei · Pfäfers</p>
+          <h4 class="text-white font-display text-xl font-semibold">Pergola & Terrassenüberdachung</h4>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12 text-center">
+      <a href="#kontakt" class="btn-primary" style="background: #1C2B45; box-shadow: 0 4px 20px rgba(28,43,69,0.3);">
+        Alle Referenzen anfragen
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7h12M8 2l5 5-5 5"/></svg>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     ABOUT
+══════════════════════════════════════════════ -->
+<section id="ueber-uns" class="py-28 bg-warm-light overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+      <!-- Image side -->
+      <div class="relative order-2 lg:order-1">
+        <div class="relative rounded-sm overflow-hidden"
+             style="box-shadow: 0 20px 80px rgba(28,43,69,0.18), 0 4px 16px rgba(28,43,69,0.1);">
+          <img
+            src="https://placehold.co/660x500/1C2B45/C8601A?text=Stieger+Holzbau+Team"
+            alt="Stieger Holzbau Team"
+            class="w-full object-cover"
+            style="display: block;"
+          />
+          <!-- Color overlay -->
+          <div class="absolute inset-0 bg-gradient-to-t from-navy/40 to-transparent mix-blend-multiply pointer-events-none"></div>
+        </div>
+        <!-- Floating badge -->
+        <div class="absolute -bottom-6 -right-4 md:right-6 bg-amber text-white rounded-sm px-6 py-5"
+             style="box-shadow: 0 8px 32px rgba(200,96,26,0.45);">
+          <div class="font-display text-4xl font-semibold leading-none">25+</div>
+          <div class="text-amber-pale text-xs tracking-widest uppercase mt-1.5">Jahre Erfahrung</div>
+        </div>
+      </div>
+
+      <!-- Text side -->
+      <div class="order-1 lg:order-2">
+        <div class="section-label">Über uns</div>
+        <h2 class="mt-4 font-display text-navy"
+            style="font-size: clamp(2rem, 3.5vw, 2.75rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.18;">
+          Holzbau ist unser Handwerk – Qualität ist unser Versprechen
+        </h2>
+        <div class="h-rule"></div>
+
+        <p class="mt-8 text-stone leading-relaxed" style="font-size: 1rem; line-height: 1.75;">
+          Die Stieger Holzbau GmbH ist ein inhabergeführtes Unternehmen mit Sitz in Bad Ragaz. Seit mehr als 25 Jahren stehen wir für handwerkliche Exzellenz, persönliche Betreuung und nachhaltige Holzkonstruktionen im Rheintal, Sarganserland und der ganzen Ostschweiz.
+        </p>
+        <p class="mt-5 text-stone leading-relaxed" style="font-size: 1rem; line-height: 1.75;">
+          Unser Team aus erfahrenen Zimmerleuten und Fachleuten verbindet traditionelles Handwerkswissen mit moderner Bautechnik. Jedes Projekt – ob Neubau, Umbau oder Renovation – wird mit derselben Sorgfalt und Leidenschaft umgesetzt.
+        </p>
+
+        <!-- Values -->
+        <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div class="flex gap-4 items-start">
+            <div class="w-10 h-10 rounded-sm bg-amber-pale flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="text-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 9l4 4 8-8"/><path d="M9 1l2 2"/></svg>
+            </div>
+            <div>
+              <div class="text-navy font-semibold text-sm">Schweizer Qualität</div>
+              <div class="text-stone text-xs leading-relaxed mt-1">Zertifizierte Materialien, präzise Ausführung</div>
+            </div>
+          </div>
+          <div class="flex gap-4 items-start">
+            <div class="w-10 h-10 rounded-sm bg-amber-pale flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="text-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="8"/><path d="M9 5v4l3 3"/></svg>
+            </div>
+            <div>
+              <div class="text-navy font-semibold text-sm">Termintreue</div>
+              <div class="text-stone text-xs leading-relaxed mt-1">Zuverlässige Planung, pünktliche Lieferung</div>
+            </div>
+          </div>
+          <div class="flex gap-4 items-start">
+            <div class="w-10 h-10 rounded-sm bg-amber-pale flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="text-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2H6L2 8l7 8 7-8z"/></svg>
+            </div>
+            <div>
+              <div class="text-navy font-semibold text-sm">Nachhaltigkeit</div>
+              <div class="text-stone text-xs leading-relaxed mt-1">FSC-zertifiziertes Holz, regionaler Bezug</div>
+            </div>
+          </div>
+          <div class="flex gap-4 items-start">
+            <div class="w-10 h-10 rounded-sm bg-amber-pale flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="text-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 11.5A8.38 8.38 0 0 1 9 17a8.38 8.38 0 0 1-8-5.5m8-4A2 2 0 1 0 9 10a2 2 0 0 0 0-2.5"/><path d="M9 1v2M1 9H3M15 9h2"/></svg>
+            </div>
+            <div>
+              <div class="text-navy font-semibold text-sm">Persönliche Betreuung</div>
+              <div class="text-stone text-xs leading-relaxed mt-1">Direkter Kontakt, klare Kommunikation</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     STATS BANNER
+══════════════════════════════════════════════ -->
+<section class="grain relative overflow-hidden py-20" style="background: #1C2B45;">
+  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(200,96,26,0.12) 0%, transparent 70%);"></div>
+  <div class="max-w-7xl mx-auto px-6 relative z-10">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div>
+        <div class="stat-num">25+</div>
+        <div class="mt-3 text-white/45 text-xs tracking-widest uppercase">Jahre Erfahrung</div>
+      </div>
+      <div>
+        <div class="stat-num">500+</div>
+        <div class="mt-3 text-white/45 text-xs tracking-widest uppercase">Projekte</div>
+      </div>
+      <div>
+        <div class="stat-num">3</div>
+        <div class="mt-3 text-white/45 text-xs tracking-widest uppercase">Kantone</div>
+      </div>
+      <div>
+        <div class="stat-num">100%</div>
+        <div class="mt-3 text-white/45 text-xs tracking-widest uppercase">Kundenzufriedenheit</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     CONTACT
+══════════════════════════════════════════════ -->
+<section id="kontakt" class="grain relative overflow-hidden py-28" style="background: #162338;">
+  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 50% 70% at 80% 50%, rgba(200,96,26,0.1) 0%, transparent 65%);"></div>
+
+  <div class="max-w-7xl mx-auto px-6 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+
+      <!-- Left: info -->
+      <div>
+        <div class="section-label" style="color: #C8601A;">
+          <span></span>Kontakt
+        </div>
+        <h2 class="mt-4 font-display text-white"
+            style="font-size: clamp(2rem, 3.5vw, 2.75rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.18;">
+          Lassen Sie uns über Ihr Projekt sprechen
+        </h2>
+        <p class="mt-6 text-white/55 leading-relaxed" style="font-size: 1rem; line-height: 1.75;">
+          Ob Neubau, Renovation oder eine spezifische Zimmereiarbeit – wir nehmen uns Zeit für Ihre Anfrage und beraten Sie unverbindlich und kompetent.
+        </p>
+
+        <div class="mt-10 space-y-6">
+          <!-- Address -->
+          <div class="flex gap-4 items-start">
+            <div class="w-10 h-10 rounded-sm flex items-center justify-center flex-shrink-0" style="background: rgba(200,96,26,0.15);">
+              <svg class="text-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 1C6.24 1 4 3.24 4 6c0 4.25 5 11 5 11s5-6.75 5-11c0-2.76-2.24-5-5-5z"/><circle cx="9" cy="6" r="2"/></svg>
+            </div>
+            <div>
+              <div class="text-white/40 text-xs tracking-widest uppercase mb-1">Adresse</div>
+              <div class="text-white text-sm leading-relaxed">Stieger Holzbau GmbH<br/>7310 Bad Ragaz, Schweiz</div>
+            </div>
+          </div>
+          <!-- Phone -->
+          <div class="flex gap-4 items-start">
+            <div class="w-10 h-10 rounded-sm flex items-center justify-center flex-shrink-0" style="background: rgba(200,96,26,0.15);">
+              <svg class="text-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.8 13.5l-3-1.3a1 1 0 0 0-1.1.2l-1.3 1.3a12 12 0 0 1-5.1-5.1l1.3-1.3a1 1 0 0 0 .2-1.1L6.5 3.2A1 1 0 0 0 5.5 2.5H3a1 1 0 0 0-1 1.1C2.5 11 7 15.5 14.4 16a1 1 0 0 0 1.1-1V14.5a1 1 0 0 0-.7-.95z"/></svg>
+            </div>
+            <div>
+              <div class="text-white/40 text-xs tracking-widest uppercase mb-1">Telefon</div>
+              <a href="tel:+41812345678" class="text-white text-sm hover:text-amber transition-colors">+41 81 234 56 78</a>
+            </div>
+          </div>
+          <!-- Email -->
+          <div class="flex gap-4 items-start">
+            <div class="w-10 h-10 rounded-sm flex items-center justify-center flex-shrink-0" style="background: rgba(200,96,26,0.15);">
+              <svg class="text-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><polyline points="16 5 9 10 2 5"/></svg>
+            </div>
+            <div>
+              <div class="text-white/40 text-xs tracking-widest uppercase mb-1">E-Mail</div>
+              <a href="mailto:info@stieger-holzbau.ch" class="text-white text-sm hover:text-amber transition-colors">info@stieger-holzbau.ch</a>
+            </div>
+          </div>
+          <!-- Hours -->
+          <div class="flex gap-4 items-start">
+            <div class="w-10 h-10 rounded-sm flex items-center justify-center flex-shrink-0" style="background: rgba(200,96,26,0.15);">
+              <svg class="text-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="8"/><path d="M9 5v4l3 3"/></svg>
+            </div>
+            <div>
+              <div class="text-white/40 text-xs tracking-widest uppercase mb-1">Öffnungszeiten</div>
+              <div class="text-white text-sm leading-relaxed">Mo–Fr: 07:30–17:00 Uhr<br/>Sa: nach Vereinbarung</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: form -->
+      <div>
+        <form class="space-y-5" onsubmit="handleForm(event)">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-white/50 text-xs tracking-widest uppercase mb-2">Vorname</label>
+              <input type="text" class="form-input" placeholder="Max" required />
+            </div>
+            <div>
+              <label class="block text-white/50 text-xs tracking-widest uppercase mb-2">Nachname</label>
+              <input type="text" class="form-input" placeholder="Muster" required />
+            </div>
+          </div>
+          <div>
+            <label class="block text-white/50 text-xs tracking-widest uppercase mb-2">E-Mail</label>
+            <input type="email" class="form-input" placeholder="max.muster@example.ch" required />
+          </div>
+          <div>
+            <label class="block text-white/50 text-xs tracking-widest uppercase mb-2">Telefon</label>
+            <input type="tel" class="form-input" placeholder="+41 79 123 45 67" />
+          </div>
+          <div>
+            <label class="block text-white/50 text-xs tracking-widest uppercase mb-2">Leistung</label>
+            <select class="form-input cursor-pointer">
+              <option value="" style="color: #1C2B45;">Bitte wählen...</option>
+              <option value="neubau" style="color: #1C2B45;">Holz-Neubau</option>
+              <option value="zimmerei" style="color: #1C2B45;">Zimmerei</option>
+              <option value="umbau" style="color: #1C2B45;">Umbau & Renovation</option>
+              <option value="fassade" style="color: #1C2B45;">Holzfassade</option>
+              <option value="dach" style="color: #1C2B45;">Dachkonstruktion</option>
+              <option value="beratung" style="color: #1C2B45;">Beratung & Planung</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-white/50 text-xs tracking-widest uppercase mb-2">Ihre Nachricht</label>
+            <textarea class="form-input" rows="5" placeholder="Beschreiben Sie Ihr Projekt..." required style="resize: vertical;"></textarea>
+          </div>
+          <button type="submit" class="btn-primary w-full justify-center" style="padding: 16px 32px;">
+            Anfrage absenden
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7h12M8 2l5 5-5 5"/></svg>
+          </button>
+          <p class="text-white/25 text-xs text-center">Wir antworten in der Regel innert 24 Stunden.</p>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════ -->
+<footer style="background: #0e1b2e; border-top: 1px solid rgba(255,255,255,0.06);">
+  <div class="max-w-7xl mx-auto px-6 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+      <!-- Brand -->
+      <div>
+        <img
+          src="brand%20assets/3ecbae0ae2324b1898677685c16f6e35-1ca32f02-300w.png.webp"
+          alt="Stieger Holzbau Logo"
+          class="h-12 w-auto mb-4"
+        />
+        <p class="text-white/40 text-sm leading-relaxed max-w-xs">
+          Ihr zuverlässiger Partner für Holzbau, Zimmerei und Holzkonstruktionen in der Ostschweiz.
+        </p>
+      </div>
+      <!-- Links -->
+      <div>
+        <h4 class="text-white/60 text-xs tracking-widest uppercase mb-5">Navigation</h4>
+        <ul class="space-y-3">
+          <li><a href="#leistungen" class="text-white/45 text-sm hover:text-amber transition-colors">Leistungen</a></li>
+          <li><a href="#projekte"   class="text-white/45 text-sm hover:text-amber transition-colors">Projekte</a></li>
+          <li><a href="#ueber-uns"  class="text-white/45 text-sm hover:text-amber transition-colors">Über uns</a></li>
+          <li><a href="#kontakt"    class="text-white/45 text-sm hover:text-amber transition-colors">Kontakt</a></li>
+        </ul>
+      </div>
+      <!-- Contact snippet -->
+      <div>
+        <h4 class="text-white/60 text-xs tracking-widest uppercase mb-5">Kontakt</h4>
+        <div class="space-y-2 text-white/45 text-sm">
+          <p>Stieger Holzbau GmbH</p>
+          <p>7310 Bad Ragaz, Schweiz</p>
+          <a href="tel:+41812345678" class="block hover:text-amber transition-colors">+41 81 234 56 78</a>
+          <a href="mailto:info@stieger-holzbau.ch" class="block hover:text-amber transition-colors">info@stieger-holzbau.ch</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-white/25 text-xs">© 2024 Stieger Holzbau GmbH. Alle Rechte vorbehalten.</p>
+      <div class="flex gap-6">
+        <a href="#" class="text-white/25 text-xs hover:text-white/50 transition-colors">Impressum</a>
+        <a href="#" class="text-white/25 text-xs hover:text-white/50 transition-colors">Datenschutz</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+  // Nav scroll behaviour
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  // Mobile menu
+  let menuOpen = false;
+  function toggleMenu() {
+    menuOpen = !menuOpen;
+    const menu = document.getElementById('mobile-menu');
+    const hb1 = document.getElementById('hb1');
+    const hb2 = document.getElementById('hb2');
+    const hb3 = document.getElementById('hb3');
+    if (menuOpen) {
+      menu.classList.add('open');
+      hb1.style.transform = 'translateY(8px) rotate(45deg)';
+      hb2.style.opacity = '0';
+      hb3.style.transform = 'translateY(-8px) rotate(-45deg)';
+    } else {
+      menu.classList.remove('open');
+      hb1.style.transform = '';
+      hb2.style.opacity = '';
+      hb3.style.transform = '';
+    }
+  }
+
+  // Form submit
+  function handleForm(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type=submit]');
+    btn.textContent = 'Anfrage gesendet ✓';
+    btn.style.background = '#2e7d32';
+    btn.disabled = true;
+  }
+
+  // Scroll reveal
+  if ('IntersectionObserver' in window) {
+    const revealEls = document.querySelectorAll('.service-card, .project-card, .stat-num');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = entry.target.classList.contains('project-card') ? '' : 'none';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => {
+      el.style.opacity = '0';
+      observer.observe(el);
+    });
+  }
+</script>
+
+</body>
+</html>
